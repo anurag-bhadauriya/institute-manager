@@ -1,0 +1,108 @@
+# version: '3.9'
+
+networks:
+  unm_network:
+    name: ${DKR_NETWORK}
+
+volumes:
+  unm_postgres_data:
+    name: ${DKR_POSTGRES_VOLUME}
+  # unm_redis_data:
+  #   name: ${DKR_REDIS_VOLUME}
+  # unm_redis_insight_data:
+  #   name: ${DKR_REDIS_INSIGHTS_VOLUME}
+  # unm_rabbitmq_data:
+  #   name: ${DKR_RABBITMQ_VOLUME}
+  # unm_rabbitmq_admin_data:
+  #   name: ${DKR_RABBITMQ_ADMIN_VOLUME}
+
+services:
+# POSTGRES DB (For Application)
+  unm_postgres:
+    image: postgres:12.18
+    container_name: ${DKR_POSTGRES}
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${PG_DB_USER}
+      POSTGRES_PASSWORD: ${PG_DB_PASSWORD}
+      POSTGRES_DB: ${PG_DB_NAME}
+    volumes:
+      - unm_postgres_data:/var/lib/postgresql/data
+    networks:
+      - unm_network
+
+# REDIS CACHE
+  # unm_redis:
+  #   image: redis:bookworm
+  #   container_name: ${DKR_REDIS}
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - unm_redis_data:/data
+  #   networks:
+  #     - unm_network
+
+# REDIS GUI SERVICE  
+  # unm_redis_insight:
+  #   image: redis/redisinsight:2.48.0
+  #   container_name: ${DKR_REDIS_INSIGHTS}
+  #   ports:
+  #     - 5540:5540
+  #   volumes:
+  #     - unm_redis_insight_data:/db
+  #   networks:
+  #     - unm_network
+
+# RABBITMQ & MANAGEMENT
+  # unm_rabbitmq:
+  #   image: rabbitmq:3.13.2-management
+  #   container_name: ${DKR_RABBITMQ}
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672
+  #   volumes:
+  #     - unm_rabbitmq_data:/var/lib/rabbitmq/
+  #     - unm_rabbitmq_admin_data:/var/log/rabbitmq/
+  #   networks:
+  #     - unm_network
+
+# VAULT SERVICE
+  # unm_vault:
+  #   image: hashicorp/vault:1.13.3
+  #   container_name: ${DKR_VAULT}
+  #   ports:
+  #     - 8200:8200
+  #   environment:
+  #     VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_PWD}
+  #   cap_add:
+  #     - IPC_LOCK
+  #   networks:
+  #     - unm_network
+
+# API SERVICE
+  # unm_api-service:
+  #   build:
+  #     context: .
+  #     args:
+  #       - API_SERVICE=${API_SERVICE}
+  #       - NEST_CLI_VERSION=${COMMON_NEST_CLI_VERSION}
+  #     dockerfile: ./docker/api-service.Dockerfile
+  #   container_name: ${DKR_API_SERVICE}
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - NAME=value
+  #   depends_on:
+  #     - unm_postgres
+  #     - unm_redis
+  #     - unm_rabbitmq
+  #     - unm_vault
+  #     - unm_redis_insight
+  #   volumes:
+  #     - ./:/usr/${API_SERVICE}
+  #     - /usr/${API_SERVICE}/node_modules
+  #   networks:
+  #     - unm_network
+
+

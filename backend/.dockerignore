@@ -1,0 +1,8 @@
+# Ignore the unnecessary backend stuff
+node_modules
+docker
+dist
+docker-compose.yml
+README.md
+
+# Ignore the unnecessary frontend stuff
