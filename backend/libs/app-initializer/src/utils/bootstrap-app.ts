@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
@@ -17,7 +17,9 @@ export interface BootstrapAppOptions {
 export async function bootstrapAsDefaultApp(options: BootstrapAppOptions){
     const app = await NestFactory.create(options.module);
     const port = options.service.port;
-    
+
+    /** Adding request validators */
+    setupValidationPipe(app)
     /** Configuring Swagger UI */
     setupSwagger(
         app,
@@ -29,6 +31,19 @@ export async function bootstrapAsDefaultApp(options: BootstrapAppOptions){
     await app.listen(port);
     console.log(`Application is running on port ${port}`);
     console.log(`Swagger Docs is available at: <DOMAIN_URL>/api-docs/`)
+}
+
+/**
+ * Function to configure the Request validators
+ */
+const setupValidationPipe = (app: INestApplication<any>) => {
+    app.useGlobalPipes(
+        new ValidationPipe({
+        whitelist: true, // Strip properties that don't have decorators
+        forbidNonWhitelisted: true, // Throw error if non-whitelisted properties are present
+        transform: true, // Automatically transform payloads to be objects typed according to their DTO classes
+        }),
+    );
 }
 
 /**

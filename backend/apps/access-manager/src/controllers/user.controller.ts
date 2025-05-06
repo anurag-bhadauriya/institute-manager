@@ -1,24 +1,41 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
 import { User } from '@app/common-entities';
+import { CreateUserDto, UserResponseDto } from '../dtos/user.dto';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ResponseEntity } from '../common/util';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
     constructor(private usersService: UsersService) { }
 
     @Get()
-    findAll(): Promise<User[]> {
-        return this.usersService.findAll();
+    async findAll(): Promise<ResponseEntity<UserResponseDto[]>> {
+        const users = await this.usersService.findAll();
+        return {
+            message: 'User Fetched Successfully !',
+            data: users
+        }
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number): Promise<User | null> {
-        return this.usersService.findOne(id);
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseEntity<UserResponseDto>> {
+        const user = await this.usersService.findOne(id);
+        return {
+            message: 'User Fetched Successfully !',
+            data: user
+        }
     }
 
     @Post()
-    create(@Body() user: Partial<User>): Promise<User | null> {
-        return this.usersService.create(user);
+    @ApiOperation({ summary: 'Create a new user' })
+    @ApiBody({ type: CreateUserDto })
+    async create(@Body() user: CreateUserDto): Promise<ResponseEntity<UserResponseDto>> {
+        const savedUser = await this.usersService.create(user);
+        return {
+            message: 'User Created Successfully !',
+            data: savedUser
+        }
     }
 
     @Put(':id')
@@ -30,7 +47,13 @@ export class UsersController {
     }
 
     @Delete(':id')
-    remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-        return this.usersService.delete(id);
+    async remove(@Param('id', ParseIntPipe) id: number): Promise<ResponseEntity<any>> {
+        await this.usersService.delete(id);
+        return {
+            message: 'User Deleted Successfully !',
+            data: {
+                id: id
+            }
+        }
     }
 }

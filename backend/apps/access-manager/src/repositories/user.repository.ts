@@ -1,6 +1,7 @@
 import { User } from '@app/common-entities';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
+import { mapError } from '../common/util';
 
 @Injectable()
 export class UserRepository {
@@ -15,12 +16,26 @@ export class UserRepository {
     }
 
     async findOne(id: number): Promise<User | null> {
-        return this.repository.findOne({ where: { id } });
+        const user = await this.repository.findOne({ where: { id } });
+        if (user){
+            console.log('KLMN')
+        } else {
+            throw new NotFoundException({
+                message: 'User does not exist !',
+            })
+        }
+        return user
     }
 
     async create(user: Partial<User>): Promise<User> {
-        const newUser = this.repository.create(user);
-        return this.repository.save(newUser);
+        try{
+            const newUser = this.repository.create(user);
+            const savedUser =  await this.repository.save(newUser);
+            return savedUser;
+        } catch (error) {
+            const issue = mapError(error, 'email')
+            throw issue;
+        }
     }
 
     async update(id: number, user: Partial<User>): Promise<User | null> {

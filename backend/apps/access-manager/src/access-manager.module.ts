@@ -4,6 +4,7 @@ import { UsersController } from './controllers/user.controller';
 import { UsersService } from './services/user.service';
 import { UserRepository } from './repositories/user.repository';
 import { entitiesToConfigure } from './configure-entities';
+import { MapperService } from './common/mapper.service';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { entitiesToConfigure } from './configure-entities';
 	],
 	providers: [
 		UsersService,
+		MapperService,
 		UserRepository
 	],
 })
