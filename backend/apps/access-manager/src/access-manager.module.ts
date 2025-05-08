@@ -11,9 +11,10 @@ import { MapperService } from './common/mapper.service';
 		...infraModuleImports({ 
 			serviceName: 'access-manager', 
 			rds: true, 
+			logger: true,
 			entities: [
 				...entitiesToConfigure
-			]
+			],
 		}),
 	],
 	controllers: [

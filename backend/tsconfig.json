@@ -17,6 +17,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
       "@app/app-initializer": [
         "libs/app-initializer/src"
@@ -29,6 +30,12 @@
       ],
       "@app/common-entities/*": [
         "libs/common-entities/src/*"
+      ],
+      "@app/logger-util": [
+        "libs/logger-util/src"
+      ],
+      "@app/logger-util/*": [
+        "libs/logger-util/src/*"
       ]
     }
   }

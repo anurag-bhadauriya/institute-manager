@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common-entities/tsconfig.lib.json"
       }
+    },
+    "logger-util": {
+      "type": "library",
+      "root": "libs/logger-util",
+      "entryFile": "index",
+      "sourceRoot": "libs/logger-util/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/logger-util/tsconfig.lib.json"
+      }
     }
   }
 }

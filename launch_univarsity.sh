@@ -4,8 +4,13 @@
 build_and_run() {
     echo -e "${green_color} Running the Docker Compose File for local infra setup: ${check_mark} ${reset_color}"
     cd backend
-    npm install
-    docker-compose up
+    if "$clean_resources"; then
+        rm -rf node_modules/
+        docker-compose down
+    else
+        npm install
+        docker-compose up
+    fi
 }
 
 

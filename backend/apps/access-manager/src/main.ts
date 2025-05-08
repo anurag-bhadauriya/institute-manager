@@ -5,7 +5,7 @@ bootstrapAsDefaultApp({
     module: AccessManagerModule,
     service: {
         title: 'Access Management Service',
-        port: 3000,
+        port: 3001,
         description: 'IAM/RBAC/Access Management',
         version: '1.0.0'
     }

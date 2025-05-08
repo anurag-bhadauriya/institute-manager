@@ -19,6 +19,11 @@ docker volume rm $(docker volume ls -q --filter dangling=true)
 4. Rabbitmq: http://localhost:5672/
 5. RabbitMq Management: http://localhost:15672/  : guest/guest
 6. Hashicorp Vault: http://localhost:8200/
+7. Garfana Loki - 
+      - http://localhost:3100/ready
+      - http://localhost:3100/metrics
+8. Grafana Dashboard [ admin/admin ]
+      - http://localhost:3000
 
 
 ## DEFINED Parameters for launch-univarsity.sh

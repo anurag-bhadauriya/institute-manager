@@ -41,7 +41,10 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.22"
+    "typeorm": "^0.3.22",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "winston-loki": "^6.1.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -55,6 +58,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -92,7 +96,8 @@
     ],
     "moduleNameMapper": {
       "^@app/app-initializer(|/.*)$": "<rootDir>/libs/app-initializer/src/$1",
-      "^@app/common-entities(|/.*)$": "<rootDir>/libs/common-entities/src/$1"
+      "^@app/common-entities(|/.*)$": "<rootDir>/libs/common-entities/src/$1",
+      "^@app/logger-util(|/.*)$": "<rootDir>/libs/logger-util/src/$1"
     }
   }
 }
