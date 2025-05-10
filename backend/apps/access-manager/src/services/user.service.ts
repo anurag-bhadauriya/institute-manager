@@ -3,17 +3,22 @@ import { UserRepository } from '../repositories/user.repository';
 import { User } from '@app/common-entities';
 import { CreateUserDto, UserResponseDto } from '../dtos/user.dto';
 import { MapperService } from '../common/mapper.service';
-import { ConnectableObservable } from 'rxjs';
+import { LoggerUtilService } from '@app/logger-util';
 
 @Injectable()
 export class UsersService {
+    private readonly LOG_CONTEXT = 'UsersService'
+    
     constructor(
         private userRepository: UserRepository,
         private readonly mapperService: MapperService,
-    ) { }
+        private logger: LoggerUtilService
+    ) {}
 
     async findAll(): Promise<UserResponseDto[]> {
+        this.logger.log('Processing findAll users request', this.LOG_CONTEXT);
         const users = await this.userRepository.findAll();
+        this.logger.debug('Users list fetched Successfully !', this.LOG_CONTEXT);
         return this.mapperService.toDtos(UserResponseDto, users)
     }
 

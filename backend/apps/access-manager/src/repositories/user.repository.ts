@@ -2,16 +2,22 @@ import { User } from '@app/common-entities';
 import { Injectable, Inject, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { mapError } from '../common/util';
+import { LoggerUtilService } from '@app/logger-util';
 
 @Injectable()
 export class UserRepository {
     private repository: Repository<User>;
+    private LOGGER_CONTEXT = 'UserRepository'
 
-    constructor(@Inject('RDS_PROVIDER') private dataSource: DataSource) {
+    constructor(
+        @Inject('RDS_PROVIDER') private dataSource: DataSource,
+        private logger: LoggerUtilService
+    ) {
         this.repository = this.dataSource.getRepository(User);
     }
 
     async findAll(): Promise<User[]> {
+        this.logger.log('Fetching List of users from repository ...', this.LOGGER_CONTEXT)
         return await this.repository.find();
     }
 
